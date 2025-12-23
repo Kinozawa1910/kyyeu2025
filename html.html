@@ -134,7 +134,7 @@
                     <option value="maybe">Để mình xem lại lịch nhé</option>
                     <option value="khong">Tiếc quá, mình không tham gia được</option>
                 </select>
-                <textarea id="userMessage" placeholder="Lời nhắn gửi đến lớp chúng mình..." rows="3"></textarea>
+                <textarea id="userMessage" placeholder="Lời nhắn gửi đến Khoa Lé..." rows="3"></textarea>
                 <button type="submit" id="submit-btn">Gửi Xác Nhận</button>
             </form>
         </div>
@@ -163,7 +163,7 @@
         }
 
         // --- 2. Xử lý Đếm ngược ---
-        const targetDate = new Date('June 30, 2025 18:00:00').getTime();
+        const targetDate = new Date('January 10, 2025 9:30:00').getTime();
 
         function updateCountdown() {
             const now = new Date().getTime();
@@ -203,13 +203,30 @@
         });
 
         // --- 4. Xử lý Form Submit ---
-        document.getElementById('graduationForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const name = document.getElementById('userName').value;
-            alert(`Cảm ơn ${name}! Thông tin của bạn đã được gửi đi thành công.`);
-            // Bạn có thể kết nối với Google Sheets ở đây nếu muốn lưu dữ liệu thật
-        });
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbyiD3M0HeqRNF8cryDIROJcV5YBj0q71Q5ljzEEc9Lscc8Y8q9Vm6HdfEAUH66KAxQWxg/exec';
+const form = document.getElementById('graduationForm');
+
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  const btn = document.getElementById("submit-btn");
+  btn.innerText = "ĐANG GỬI...";
+  btn.disabled = true;
+
+  fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+    .then(response => {
+        alert("Xác nhận thành công! Hẹn gặp bạn nhé.");
+        form.reset();
+        btn.innerText = "GỬI XÁC NHẬN";
+        btn.disabled = false;
+    })
+    .catch(error => {
+        alert("Lỗi rồi! Bạn kiểm tra lại mạng nhé.");
+        btn.innerText = "GỬI LẠI";
+        btn.disabled = false;
+    });
+});
     </script>
 </body>
 
 </html>
+
